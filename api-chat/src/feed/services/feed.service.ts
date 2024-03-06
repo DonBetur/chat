@@ -9,50 +9,49 @@ import { FeedPost } from '../models/post.interface';
 
 @Injectable()
 export class FeedService {
-  constructor(
-    @InjectRepository(FeedPostEntity)
-    private readonly feedPostRepository: Repository<FeedPostEntity>,
-  ) {}
+	constructor(
+		@InjectRepository(FeedPostEntity)
+		private readonly feedPostRepository: Repository<FeedPostEntity>,
+	) {}
 
+	createPost(user: User, feedPost: FeedPost): Observable<FeedPost> {
+		feedPost.author = user;
+		return from(this.feedPostRepository.save(feedPost));
+	}
 
+	findAllPosts(): Observable<FeedPost[]> {
+		return from(this.feedPostRepository.find());
+	}
 
-  createPost(user: User, feedPost: FeedPost): Observable<FeedPost> {
-    feedPost.author = user;
-    return from(this.feedPostRepository.save(feedPost));
-  }
+	// findPosts(take : number = 10, skip: number = 0): Observable<FeedPost[]>{
+	//   return from (this.feedPostRepository.findAndCount({take, skip}).then(([posts]) => {
+	//     return <FeedPost[]>posts;
+	//   }));
+	// }
 
-  findAllPosts(): Observable<FeedPost[]> {
-    return from(this.feedPostRepository.find());
-  }
+	findPosts(take = 10, skip = 0): Observable<FeedPost[]> {
+		return from(
+			this.feedPostRepository
+				.createQueryBuilder('post')
+				.innerJoinAndSelect('post.author', 'author')
+				.orderBy('post.createdAt', 'DESC')
+				.take(take)
+				.skip(skip)
+				.getMany(),
+		);
+	}
 
-  // findPosts(take : number = 10, skip: number = 0): Observable<FeedPost[]>{
-  //   return from (this.feedPostRepository.findAndCount({take, skip}).then(([posts]) => {
-  //     return <FeedPost[]>posts;
-  //   }));
-  // }
+	updatePost(id: number, feedPost: FeedPost): Observable<UpdateResult> {
+		return from(this.feedPostRepository.update(id, feedPost));
+	}
 
-  findPosts(take : number = 10, skip: number = 0): Observable<FeedPost[]>{
-    return from (
-      this.feedPostRepository
-      .createQueryBuilder('post')
-      .innerJoinAndSelect('post.author', 'author')
-      .orderBy('post.createdAt', 'DESC')
-      .take(take)
-      .skip(skip)
-      .getMany(),
-    );
-  }
+	deletePost(id: number): Observable<DeleteResult> {
+		return from(this.feedPostRepository.delete(id));
+	}
 
-  updatePost(id: number, feedPost: FeedPost): Observable<UpdateResult> {
-    return from(this.feedPostRepository.update(id, feedPost));
-  }
-
-  deletePost(id: number): Observable<DeleteResult> {
-    return from(this.feedPostRepository.delete(id));
-  }
-
-  findPostById(id: number): Observable<FeedPost>{
-    return from(this.feedPostRepository.findOne({where:{id}, relations: ['author'] }),
-    );
-  }
+	findPostById(id: number): Observable<FeedPost> {
+		return from(
+			this.feedPostRepository.findOne({ where: { id }, relations: ['author'] }),
+		);
+	}
 }

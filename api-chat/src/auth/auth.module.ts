@@ -12,17 +12,17 @@ import { UserController } from './controllers/user.controller';
 import { FriendRequestEntity } from './models/friend-request.entity';
 
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      useFactory: () => ({
-          secret: process.env.JWT_SECRET,
-          signOptions: { expiresIn: '3600s'}
-      }),
-    }),
-    TypeOrmModule.forFeature([UserEntity, FriendRequestEntity]),
-  ],
-  providers: [AuthService, JwtGuard, JwtStrategy, RolesGuard, UserService],
-  controllers: [AuthController, UserController],
-  exports: [AuthService, UserService],
+	imports: [
+		JwtModule.registerAsync({
+			useFactory: () => ({
+				secret: process.env.JWT_SECRET,
+				signOptions: { expiresIn: '3600s' },
+			}),
+		}),
+		TypeOrmModule.forFeature([UserEntity, FriendRequestEntity]),
+	],
+	providers: [AuthService, JwtGuard, JwtStrategy, RolesGuard, UserService],
+	controllers: [AuthController, UserController],
+	exports: [AuthService, UserService],
 })
 export class AuthModule {}

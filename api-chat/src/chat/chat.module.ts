@@ -8,14 +8,14 @@ import { MessageEntity } from './models/message.entity';
 import { ConversationService } from './services/conversation.service';
 
 @Module({
-  imports: [
-    AuthModule,
-    TypeOrmModule.forFeature([
-      ConversationEntity,
-      ActiveConversationEntity,
-      MessageEntity,
-    ]),
-  ],
-  providers: [ChatGateway, ConversationService],
+	imports: [
+		AuthModule,
+		TypeOrmModule.forFeature([
+			ConversationEntity,
+			ActiveConversationEntity,
+			MessageEntity,
+		]),
+	],
+	providers: [ChatGateway, ConversationService],
 })
 export class ChatModule {}
