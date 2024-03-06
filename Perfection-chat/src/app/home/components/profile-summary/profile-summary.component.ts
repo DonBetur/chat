@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 // import { FileTypeResult } from 'file-type';
 // import { fromBuffer } from 'file-type/core';
 import { BehaviorSubject, from, of, Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ import { BannerColorService } from '../../services/banner-color.service';
   styleUrls: ['./profile-summary.component.scss'],
 })
 export class ProfileSummaryComponent implements OnInit{
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   // validFileExtensions: validFileExtension[] = ['png', 'jpg', 'jpeg'];
   // validMimeTypes: validMimeType[] = ['image/png', 'image/jpg', 'image/jpeg'];
@@ -37,8 +37,8 @@ export class ProfileSummaryComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.form = new FormGroup({
-      file: new FormControl(null),
+    this.form = new UntypedFormGroup({
+      file: new UntypedFormControl(null),
     });
 
     this.userSubscription = this.authService.userStream.subscribe(
