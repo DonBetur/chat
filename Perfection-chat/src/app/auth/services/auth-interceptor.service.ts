@@ -13,6 +13,9 @@ import { switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
+
+	constructor() {}
+
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
@@ -34,6 +37,4 @@ export class AuthInterceptorService implements HttpInterceptor {
       })
     );
   }
-
-  constructor() {}
 }

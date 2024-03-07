@@ -1,0 +1,109 @@
+<form [formGroup]="form" (ngSubmit)="register()">
+	<ion-card>
+		<ion-item>
+			<ion-label position="floating">Фамилия</ion-label>
+			<ion-input
+				type="text"
+				name="firstName"
+				[formControl]="form.controls.firstName"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.firstName.valid && form.controls.firstName.touched"
+			>Пожалуйста, введите вашу фамилию</ion-text
+		>
+
+
+		<ion-item>
+			<ion-label position="floating">Имя</ion-label>
+			<ion-input
+				type="text"
+				name="lastName"
+				[formControl]="form.controls.lastName"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.lastName.valid && form.controls.lastName.touched"
+			>Пожалуйста, введите ваше имя</ion-text
+		>
+
+
+		<ion-item>
+			<ion-label position="floating">Отчество</ion-label>
+			<ion-input
+				type="text"
+				name="middleName"
+				[formControl]="form.controls.middleName"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.middleName.valid && form.controls.middleName.touched"
+			>Пожалуйста, введите ваше отчество</ion-text
+		>
+
+		<ion-item>
+			<ion-label position="floating">Почта</ion-label>
+			<ion-input
+				type="email"
+				name="email"
+				[formControl]="form.controls.email"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.email.valid && form.controls.email.touched"
+			>Пожалуйста, введите вашу почту</ion-text
+		>
+
+		<ion-item>
+			<ion-label position="floating">Пароль</ion-label>
+			<ion-input
+				type="password"
+				name="password"
+				[formControl]="form.controls.password"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.password.valid && form.controls.password.touched"
+			>Пожалуйста, введите ваш пароль</ion-text
+		>
+
+		<p class="terms-and-conditions">
+			Нажимая "Подтверждаю & Присоединиться", вы подтверждаете, что
+			соглашаетесь с правилами студии о:
+			<ion-text color="tertiary">Пользовательском соглашение</ion-text>,
+			<ion-text color="tertiary">Политики конфиденциальности</ion-text>, и
+			<ion-text color="tertiary"
+				>Политики о неразоглашении коммерческих соглашений компании</ion-text
+			>
+		</p>
+
+		<ion-button
+			[disabled]="!form.valid"
+			type="submit"
+			shape="round"
+			expand="block"
+		>
+			Присоединиться сейчас
+		</ion-button>
+
+
+	</ion-card>
+</form>
+
+<div class="toggle-text">
+	Уже в команде студии?
+	<ion-router-link class="toggle-auth-mode" routerLink="/auth/login" color="primary">
+		Войти
+	</ion-router-link>
+</div>
+

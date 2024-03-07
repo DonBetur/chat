@@ -1,0 +1,51 @@
+<form [formGroup]="form" (ngSubmit)="login()">
+	<ion-card>
+
+		<ion-item>
+			<ion-label position="floating">Почта</ion-label>
+			<ion-input
+				type="email"
+				name="email"
+				[formControl]="form.controls.email"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.email.valid && form.controls.email.touched"
+			>Пожалуйста, введите вашу почту</ion-text
+		>
+
+		<ion-item>
+			<ion-label position="floating">Пароль</ion-label>
+			<ion-input
+				type="password"
+				name="password"
+				[formControl]="form.controls.password"
+			></ion-input>
+		</ion-item>
+		<ion-text
+			style="font-style: italic"
+			color="danger"
+			*ngIf="!form.controls.password.valid && form.controls.password.touched"
+			>Пожалуйста, введите ваш пароль</ion-text
+		>
+
+		<ion-button
+			[disabled]="!form.valid"
+			type="submit"
+			shape="round"
+			expand="block"
+    >
+			Войти
+		</ion-button>
+
+	</ion-card>
+</form>
+
+<div class="toggle-text">
+	Новый пользователь студии?
+	<ion-router-link class="toggle-auth-mode" routerLink="/auth/register" color="primary">
+		Присоединиться сейчас
+	</ion-router-link>
+</div>

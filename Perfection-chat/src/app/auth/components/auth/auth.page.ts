@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NewUser } from './models/newUser.model';
+import { NewUser } from '../../models/newUser.model';
 
-import { AuthService } from './services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
   styleUrls: ['./auth.page.scss'],
 })
-export class AuthPage implements OnInit {
+export class AuthPage {
   // title = 'email-of-company';
   // userEmail = new FormGroup({
   //   companyEmail: new FormControl('', [
@@ -23,8 +23,6 @@ export class AuthPage implements OnInit {
   submissionType: 'login' | 'join' = 'login';
 
   constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit() {}
 
   onSubmit() {
     const { email, password } = this.form.value;

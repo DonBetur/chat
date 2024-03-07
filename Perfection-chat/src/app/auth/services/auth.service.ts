@@ -28,40 +28,40 @@ export class AuthService {
   }
 
   get isUserLoggedIn(): Observable<boolean> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User) => {
-        const isUserAuthenticated = user !== null;
-        return of(isUserAuthenticated);
-      })
-    );
+    return this.user$.asObservable()
+			.pipe(
+				switchMap((user: User) => {
+					const isUserAuthenticated = user !== null;
+					return of(isUserAuthenticated);
+				})
+			);
   }
 
   get userRole(): Observable<Role> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User) => {
-        return of(user?.role); // for after signed out, but still subscribed
-      })
-    );
+    return this.user$.asObservable()
+			.pipe(
+				switchMap((user: User) => of(user?.role)) // for after signed out, but still subscribed
+			);
   }
 
   get userId(): Observable<number> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User) => {
-        return of(user.id);
-      })
-    );
+    return this.user$.asObservable()
+			.pipe(
+				switchMap((user: User) => of(user.id))
+			);
   }
 
   get userFullName(): Observable<string> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User) => {
-        if (!user) {
-          return of(null);
-        }
-        const fullName = user.firstName + ' ' + user.lastName;
-        return of(fullName);
-      })
-    );
+    return this.user$.asObservable()
+			.pipe(
+				switchMap((user: User) => {
+					if (!user) {
+						return of(null);
+					}
+					const fullName = user.firstName + ' ' + user.lastName;
+					return of(fullName);
+				})
+			);
   }
 
   // get userFullImagePath(): Observable<string> {
@@ -78,7 +78,10 @@ export class AuthService {
   //   );
   // }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+		private http: HttpClient,
+		private router: Router
+	) {}
 
   // getDefaultFullImagePath(): string {
   //   return 'http://localhost:3000/api-chat/feed/images/blank-profile-picture.png';
@@ -126,33 +129,43 @@ export class AuthService {
   //     );
   // }
 
+	/**
+	 * Автоматический логин и редирект на /home при успешной регистрации
+	 */
   register(newUser: NewUser): Observable<User> {
-    return this.http
-      .post<User>(
+    return this.http.post<User>(
         `${environment.baseApiUrl}/auth/register`,
         newUser,
         this.httpOptions
       )
-      .pipe(take(1));
+      .pipe(
+				switchMap(() => this.login(newUser.email, newUser.password)),
+				take(1)
+			);
   }
 
-  login(email: string, password: string): Observable<{ token: string }> {
-    return this.http
-      .post<{ token: string }>(
+	/**
+	 * Автоматический  редирект на /home при успешной авторизации
+	 */
+  login(email: string, password: string): Observable<User> {
+    return this.http.post<{ token: string }>(
         `${environment.baseApiUrl}/auth/login`,
         { email, password },
         this.httpOptions
       )
       .pipe(
-        take(1),
-        tap((response: { token: string }) => {
+        map((response: { token: string }) => {
          Storage.set({
             key: 'token',
             value: response.token,
           });
           const decodedToken: UserResponse = jwt_decode(response.token);
           this.user$.next(decodedToken.user);
-        })
+					this.router.navigateByUrl('/home');
+
+					return decodedToken.user;
+        }),
+				take(1)
       );
   }
 

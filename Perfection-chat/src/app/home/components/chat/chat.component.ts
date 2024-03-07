@@ -26,9 +26,9 @@ export class ChatComponent {
   messages: Message[] = [];
   friends: User[] = [];
   friend: User;
-  friend$: BehaviorSubject<User> = new BehaviorSubject<User>({});
+  friend$: BehaviorSubject<User> = new BehaviorSubject<User | null>(null);
 
-  selectedConversationIndex: number = 0;
+  selectedConversationIndex = 0;
 
   private userImagePathSubscription: Subscription;
   private userIdSubscription: Subscription;
@@ -75,7 +75,7 @@ export class ChatComponent {
       .subscribe((messages: Message[]) => {
         messages.forEach((message: Message) => {
           const allMessageIds = this.messages.map(
-            (message: Message) => message.id
+            (message1: Message) => message1.id
           );
           if (!allMessageIds.includes(message.id)) {
             this.messages.push(message);
@@ -89,7 +89,7 @@ export class ChatComponent {
         message.createdAt = new Date();
 
         const allMessageIds = this.messages.map(
-          (message: Message) => message.id
+          (message1: Message) => message1.id
         );
         if (!allMessageIds.includes(message.id)) {
           this.messages.push(message);
@@ -122,10 +122,10 @@ export class ChatComponent {
   onSubmit() {
     const { message } = this.form.value;
     if (!message) return;
-    let conversationUserIds = [this.userId, this.friend.id].sort();
+    const conversationUserIds = [this.userId, this.friend.id].sort();
 
     this.conversations.forEach((conversation: Conversation) => {
-      let userIds = conversation.users.map((user: User) => user.id).sort();
+      const userIds = conversation.users.map((user: User) => user.id).sort();
 
       if (JSON.stringify(conversationUserIds) === JSON.stringify(userIds)) {
         this.conversation = conversation;

@@ -9,9 +9,9 @@ import { of } from 'rxjs';
 
 import { AuthPage } from './auth.page';
 
-import { AuthService } from './services/auth.service';
-import { NewUser } from './models/newUser.model';
-import { User } from './models/user.model';
+import { AuthService } from '../../services/auth.service';
+import { NewUser } from '../../models/newUser.model';
+import { User } from '../../models/user.model';
 
 let component: AuthPage;
 let fixture: ComponentFixture<AuthPage>;
@@ -37,7 +37,7 @@ const mockUser: User = {
   posts: null,
 };
 
-const mockAuthService: Partial<AuthService> = {
+const mockAuthService = {
   register: () => of(mockUser),
   login: () => of({ token: 'jwt' }),
 };
