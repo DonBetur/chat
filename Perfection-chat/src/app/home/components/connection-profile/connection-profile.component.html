@@ -26,38 +26,42 @@
         <ion-img src="../../../../assets/avatar_me.jpg"></ion-img>
       </ion-avatar>
 
-      <ion-card-title *ngIf="user" class="ion-text-left">
-        {{ user.firstName }} {{ user.lastName }}</ion-card-title
-      >
-      <ion-card-subtitle class="ion-text-left"
-        >{{ user.jobRole }}</ion-card-subtitle
-      >
+      <ng-container *ngIf="user$ | async as user">
+				<ion-card-title class="ion-text-left">
+					{{ user.firstName }} {{ user.lastName }}</ion-card-title
+				>
+				<ion-card-subtitle class="ion-text-left"
+					>{{ user.jobRole }}</ion-card-subtitle
+				>
+			</ng-container>
     </ion-card-header>
 
     <ion-card-content>
       <ng-container
-        *ngIf="
-          ['not-sent', 'pending', 'waiting-for-current-user-response'].includes(
-            friendRequestStatus
-          )
-        "
+				*ngIf="friendRequestStatus$ | async as friendRequestStatus"
       >
-        <ion-button
-          color="danger"
-          (click)="addUser()"
-          [disabled]="
-            ['pending', 'waiting-for-current-user-response'].includes(
-              friendRequestStatus
-            )
-          "
-          shape="round"
-          style="margin-right: 10px;"
-          >{{
-            friendRequestStatus === "waiting-for-current-user-response"
-              ? "Принять запрос"
-              : "Подключить"
-          }}</ion-button
-        >
+        <ng-container *ngIf="
+				['not-sent', 'pending', 'waiting-for-current-user-response'].includes(
+					friendRequestStatus
+				)
+			">
+					<ion-button
+						color="danger"
+						(click)="addUser()"
+						[disabled]="
+							['pending', 'waiting-for-current-user-response'].includes(
+								friendRequestStatus
+							)
+						"
+						shape="round"
+						style="margin-right: 10px;"
+						>{{
+							friendRequestStatus === "waiting-for-current-user-response"
+								? "Принять запрос"
+								: "Подключить"
+						}}</ion-button
+					>
+				</ng-container>
       </ng-container>
       <ion-button fill="outline" color="danger" shape="round" class="mess" style="margin-right: 10px;">
         <ion-icon slot="start" name="lock-closed" class="mess"></ion-icon>

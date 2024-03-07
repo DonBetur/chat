@@ -20,7 +20,7 @@ import { ChatModule } from './chat/chat.module';
 			password: process.env.POSTGRES_PASSWORD,
 			database: process.env.POSTGRES_DATABASE,
 			autoLoadEntities: true,
-			synchronize: true, // возможна потеря данных при продакшине
+			synchronize: true, // возможна потеря данных при продакшене
 		}),
 		FeedModule,
 		AuthModule,

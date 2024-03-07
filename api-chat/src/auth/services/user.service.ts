@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { FriendRequestEntity } from '../models/friend-request.entity';
 import {
 	FriendRequest,

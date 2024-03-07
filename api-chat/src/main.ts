@@ -16,8 +16,14 @@ async function bootstrap() {
 		console.log(process.env.POSTGRES_PASSWORD, 'process.env.POSTGRES_PASSWORD');
 		console.log(process.env.POSTGRES_DATABASE, 'process.env.POSTGRES_DATABASE');
 		console.log(process.env.JWT_SECRET, 'process.env.JWT_SECRET');
+		console.log('-');
 	}, 1000);
 	const app = await NestFactory.create(AppModule);
+	//app.enableCors({
+	//	origin: 'http://localhost:3000', // Замените на свой фронтенд-домен
+	//	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	//	credentials: true,
+	//});
 	app.enableCors();
 	app.setGlobalPrefix('api-chat');
 	app.useGlobalPipes(new ValidationPipe());

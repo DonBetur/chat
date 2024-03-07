@@ -9,43 +9,42 @@ import { Conversation } from '../models/Conversation';
 import { Message } from '../models/Message';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class ChatService {
-  constructor(private socket: ChatSocketService, private http: HttpClient) {}
-  getFriends(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.baseApiUrl}/user/friends/my`);
-  }
+	constructor(private socket: ChatSocketService, private http: HttpClient) { }
+	getFriends(): Observable<User[]> {
+		return this.http.get<User[]>(`${environment.baseApiUrl}/user/friends/my`);
+	}
 
-  sendMessage(message: string, conversation: Conversation): void {
-    const newMessage: Message = {
-      message,
-      conversation,
-    };
-    this.socket.emit('sendMessage', newMessage);
-  }
+	sendMessage(message: string, conversation: Conversation): void {
+		this.socket.emit('sendMessage', {
+			message,
+			conversation,
+		});
+	}
 
-  getNewMessage(): Observable<Message> {
-    return this.socket.fromEvent<Message>('newMessage');
-  }
+	getNewMessage(): Observable<Message> {
+		return this.socket.fromEvent<Message>('newMessage');
+	}
 
-  createConversation(friend: User): void {
-    this.socket.emit('createConversation', friend);
-  }
+	createConversation(friend: User): void {
+		this.socket.emit('createConversation', friend);
+	}
 
-  joinConversation(friendId: number): void {
-    this.socket.emit('joinConversation', friendId);
-  }
+	joinConversation(friendId: number): void {
+		this.socket.emit('joinConversation', friendId);
+	}
 
-  leaveConversation(): void {
-    this.socket.emit('leaveConversation');
-  }
+	leaveConversation(): void {
+		this.socket.emit('leaveConversation');
+	}
 
-  getConversationMessages(): Observable<Message[]> {
-    return this.socket.fromEvent<Message[]>('messages');
-  }
+	getConversationMessages(): Observable<Message[]> {
+		return this.socket.fromEvent<Message[]>('messages');
+	}
 
-  getConversations(): Observable<Conversation[]> {
-    return this.socket.fromEvent<Conversation[]>('conversations');
-}
+	getConversations(): Observable<Conversation[]> {
+		return this.socket.fromEvent<Conversation[]>('conversations');
+	}
 }

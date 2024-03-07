@@ -67,6 +67,8 @@ export class ChatComponent {
     this.conversationSubscription = this.chatService
       .getConversations()
       .subscribe((conversations: Conversation[]) => {
+				console.log(conversations);
+
         this.conversations.push(conversations[0]); // Note: from mergeMap stream
       });
 

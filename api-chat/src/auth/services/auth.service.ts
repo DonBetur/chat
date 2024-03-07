@@ -8,6 +8,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { User } from '../models/user.class';
+import { AuthLoginDto } from '../dto/auth-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +31,7 @@ export class AuthService {
 	}
 
 	registerAccount(user: User): Observable<User> {
-		const { firstName, lastName, middleName, email, password } = user;
+		const { firstName, lastName, middleName, email, password, jobRole } = user;
 
 		return this.doesUserExist(email).pipe(
 			tap((doesUserExist: boolean) => {
@@ -50,6 +51,7 @@ export class AuthService {
 								middleName,
 								email,
 								password: hashedPassword,
+								jobRole,
 							}),
 						).pipe(
 							map((user: User) => {
@@ -68,7 +70,15 @@ export class AuthService {
 			this.userRepository.findOne({
 				where: { email },
 				//{
-				select: ['id', 'firstName', 'lastName', 'email', 'password', 'role'],
+				select: [
+					'id',
+					'firstName',
+					'lastName',
+					'email',
+					'password',
+					'role',
+					'jobRole',
+				],
 				//},
 			}),
 		).pipe(
@@ -91,7 +101,7 @@ export class AuthService {
 		);
 	}
 
-	login(user: User): Observable<string> {
+	login(user: AuthLoginDto): Observable<string> {
 		const { email, password } = user;
 		return this.validateUser(email, password).pipe(
 			switchMap((user: User) => {

@@ -26,7 +26,10 @@ export class PostService {
       .get<Post[]>(`${environment.baseApiUrl}/feed${params}`)
       .pipe(
         tap((posts: Post[]) => {
-          if (posts.length === 0) throw new Error('No posts to retrieve');
+          if (posts.length === 0) {
+						//throw new Error('No posts to retrieve');
+						console.log('No posts to retrieve');
+					};
         }),
         catchError(
           this.errorHandlerService.handleError<Post[]>('getSelectedPosts', [])

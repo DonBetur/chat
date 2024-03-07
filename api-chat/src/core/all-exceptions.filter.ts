@@ -9,10 +9,7 @@ import { Response, Request } from 'express';
 
 import * as fs from 'fs';
 
-import {
-	CustomHttpExceptionResponse,
-	HttpExceptionResponse,
-} from './models/http-exception-response.interface';
+import { CustomHttpExceptionResponse } from './models/http-exception-response.interface';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -24,11 +21,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
 		let status: HttpStatus;
 		let errorMessage: string;
 
+		console.error(exception);
+
 		if (exception instanceof HttpException) {
+			const message = (exception as any).response.message.join(', ');
 			status = exception.getStatus();
-			const errorResponse = exception.getResponse();
-			errorMessage =
-				(errorResponse as HttpExceptionResponse).error || exception.message;
+
+			errorMessage = message;
 		} else {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			errorMessage = 'Critical internal server error occurred!';

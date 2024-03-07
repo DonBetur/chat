@@ -35,7 +35,7 @@ export class UserEntity {
 	@Column({ type: 'enum', enum: Role, default: Role.USER })
 	role: Role;
 
-	@Column()
+	@Column({ nullable: true })
 	jobRole: string;
 
 	@OneToMany(() => FeedPostEntity, (feedPostEntity) => feedPostEntity.author)
