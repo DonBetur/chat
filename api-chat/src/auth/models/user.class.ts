@@ -14,6 +14,6 @@ export class User {
 	// imagePath?: string;
 	role?: Role;
 	posts?: FeedPost[];
-	//@IsString()
-	//jobRole?: string;
+	@IsString()
+	jobRole: string;
 }

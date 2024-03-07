@@ -1,9 +1,9 @@
 import {
-  Column,
-  Entity,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
+	Column,
+	Entity,
+	ManyToMany,
+	OneToMany,
+	PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { FeedPostEntity } from '../../feed/models/post.entity';
@@ -14,48 +14,51 @@ import { MessageEntity } from 'src/chat/models/message.entity';
 
 @Entity('user')
 export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @Column()
-  firstName: string;
+	@Column()
+	firstName: string;
 
-  @Column()
-  lastName: string;
+	@Column()
+	lastName: string;
 
-  @Column({ unique: true })
-  email: string;
+	@Column({ unique: true })
+	email: string;
 
-  @Column({ select: false })
-  password: string;
+	@Column({ select: false })
+	password: string;
 
-  @Column({ nullable: true })
-  imagePath: string;
+	@Column({ nullable: true })
+	imagePath: string;
 
-  @Column({ type: 'enum', enum: Role, default: Role.USER })
-  role: Role;
+	@Column({ type: 'enum', enum: Role, default: Role.USER })
+	role: Role;
 
-  @OneToMany(() => FeedPostEntity, (feedPostEntity) => feedPostEntity.author)
-  feedPosts: FeedPostEntity[];
+	@Column({ nullable: true })
+	jobRole: string;
 
-  @OneToMany(
-    () => FriendRequestEntity,
-    (friendRequestEntity) => friendRequestEntity.creator,
-  )
-  sentFriendRequests: FriendRequestEntity[];
+	@OneToMany(() => FeedPostEntity, (feedPostEntity) => feedPostEntity.author)
+	feedPosts: FeedPostEntity[];
 
-  @OneToMany(
-    () => FriendRequestEntity,
-    (friendRequestEntity) => friendRequestEntity.receiver,
-  )
-  receivedFriendRequests: FriendRequestEntity[];
+	@OneToMany(
+		() => FriendRequestEntity,
+		(friendRequestEntity) => friendRequestEntity.creator,
+	)
+	sentFriendRequests: FriendRequestEntity[];
 
-  @ManyToMany(
-    () => ConversationEntity,
-    (conversationEntity) => conversationEntity.users,
-  )
-  conversations: ConversationEntity[];
+	@OneToMany(
+		() => FriendRequestEntity,
+		(friendRequestEntity) => friendRequestEntity.receiver,
+	)
+	receivedFriendRequests: FriendRequestEntity[];
 
-  @OneToMany(() => MessageEntity, (messageEntity) => messageEntity.user)
-  messages: MessageEntity[];
+	@ManyToMany(
+		() => ConversationEntity,
+		(conversationEntity) => conversationEntity.users,
+	)
+	conversations: ConversationEntity[];
+
+	@OneToMany(() => MessageEntity, (messageEntity) => messageEntity.user)
+	messages: MessageEntity[];
 }

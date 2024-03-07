@@ -15,7 +15,8 @@ export class RegisterComponent {
 		lastName: new FormControl(null, [Validators.required]),
 		middleName: new FormControl(null, [Validators.required]),
 		email: new FormControl(null, [Validators.required, Validators.email]),
-		password: new FormControl(null, [Validators.required])
+		password: new FormControl(null, [Validators.required]),
+		jobRole: new FormControl('Аниматор', [Validators.required])
 	});
 
   constructor(

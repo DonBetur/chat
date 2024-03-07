@@ -4,4 +4,5 @@ export interface NewUser {
 	middleName: string;
 	email: string;
 	password: string;
+	jobRole: string;
 }

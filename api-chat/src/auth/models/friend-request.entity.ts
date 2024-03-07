@@ -5,18 +5,18 @@ import { UserEntity } from './user.entity';
 
 @Entity('request')
 export class FriendRequestEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @ManyToOne(() => UserEntity, (userEntity) => userEntity.sentFriendRequests)
-  creator: UserEntity;
+	@ManyToOne(() => UserEntity, (userEntity) => userEntity.sentFriendRequests)
+	creator: UserEntity;
 
-  @ManyToOne(
-    () => UserEntity,
-    (userEntity) => userEntity.receivedFriendRequests,
-  )
-  receiver: UserEntity;
+	@ManyToOne(
+		() => UserEntity,
+		(userEntity) => userEntity.receivedFriendRequests,
+	)
+	receiver: UserEntity;
 
-  @Column()
-  status: FriendRequest_Status;
+	@Column()
+	status: FriendRequest_Status;
 }

@@ -86,12 +86,13 @@ export class UserService {
 								error:
 									'A friend request has already been sent of received to your account!',
 							});
-						const friendRequest: FriendRequest = {
-							creator,
-							receiver,
-							status: 'pending',
-						};
-						return from(this.friendRequestRepository.save(friendRequest));
+						return from(
+							this.friendRequestRepository.save({
+								creator,
+								receiver,
+								status: 'pending',
+							}),
+						);
 					}),
 				);
 			}),
