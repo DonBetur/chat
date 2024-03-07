@@ -9,6 +9,7 @@ import { AuthPageRoutingModule } from './auth-routing.module';
 import { AuthPage } from './components/auth/auth.page';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { FullNamePipe } from './pipes/full-name.pipe';
 
 @NgModule({
   imports: [

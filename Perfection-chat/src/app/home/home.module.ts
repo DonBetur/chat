@@ -17,6 +17,7 @@ import { PopoverComponent } from './components/header/popover/popover.component'
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { FriendRequestsPopoverComponent } from './components/header/friend-requests-popover/friend-requests-popover.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { FullNamePipe } from '../auth/pipes/full-name.pipe';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
@@ -34,6 +35,7 @@ import { ChatComponent } from './components/chat/chat.component';
     UserProfileComponent,
     FriendRequestsPopoverComponent,
     ChatComponent,
+		FullNamePipe
   ],
 })
 export class HomePageModule {}

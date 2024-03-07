@@ -8,8 +8,10 @@
         </ion-avatar>
       </ion-col>
       <ion-col>
-        <ion-card-title>{{ fullName }}</ion-card-title>
-        <ion-card-subtitle>Аниматор</ion-card-subtitle>
+				<ng-container *ngIf="user$ | async as user">
+					<ion-card-title>{{ user | fullName }}</ion-card-title>
+					<ion-card-subtitle>{{ user.jobRole }}</ion-card-subtitle>
+				</ng-container>
       </ion-col>
     </ion-row>
   </ion-grid>

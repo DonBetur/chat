@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 // import { FileTypeResult } from 'file-type';
 // import { fromBuffer } from 'file-type/core';
-import { BehaviorSubject, from, of, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable, of, Subscription } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
 
 import { Role, User } from 'src/app/auth/models/user.model';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -26,10 +26,11 @@ export class ProfileSummaryComponent implements OnInit{
   userFullImagePath: string;
   // private userImagePathSubscription: Subscription;
 
-  private userSubscription: Subscription;
-
-  fullName$ = new BehaviorSubject<string>(null);
-  fullName = '';
+	user$: Observable<User> = this.authService.userStream.pipe(
+		tap((user) => {
+			this.bannerColorService.bannerColors = this.bannerColorService.getBannerColors(user.role);
+		})
+	);
 
   constructor(
     private authService: AuthService,
@@ -40,20 +41,6 @@ export class ProfileSummaryComponent implements OnInit{
     this.form = new UntypedFormGroup({
       file: new UntypedFormControl(null),
     });
-
-    this.userSubscription = this.authService.userStream.subscribe(
-      (user: User) => {
-        if (user?.role) {
-          this.bannerColorService.bannerColors =
-            this.bannerColorService.getBannerColors(user.role);
-        }
-
-        if (user && user?.firstName && user?.lastName) {
-          this.fullName = user.firstName + ' ' + user.lastName;
-          this.fullName$.next(this.fullName);
-        }
-      }
-    );
 
   //   this.userImagePathSubscription =
   //     this.authService.userFullImagePath.subscribe((fullImagePath: string) => {

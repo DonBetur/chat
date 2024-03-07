@@ -31,8 +31,11 @@
       ><ion-img src="../../../../assets/avatar_me.jpg"></ion-img
     ></ion-avatar>
 
-    <ion-card-title class="ion-margin-top">{{ fullName }}</ion-card-title>
-    <ion-card-subtitle>Аниматор</ion-card-subtitle>
+		<ng-container *ngIf="user$ | async as user">
+			{{ user | json }}
+			<ion-card-title class="ion-margin-top"> {{ user | fullName }} </ion-card-title>
+			<ion-card-subtitle> {{ user.jobRole }} </ion-card-subtitle>
+		</ng-container>
   </ion-card-header>
 
   <div class="item-divider"></div>

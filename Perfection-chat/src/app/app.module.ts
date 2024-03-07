@@ -8,11 +8,14 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AuthInterceptorService } from './auth/services/auth-interceptor.service';
+import { FullNamePipe } from './auth/pipes/full-name.pipe';
 
 
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [
+			AppComponent
+		],
     imports: [
         BrowserModule,
         IonicModule.forRoot(),

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { PopoverController } from '@ionic/angular';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { User } from 'src/app/auth/models/user.model';
 
 @Component({
   selector: 'app-popover',
@@ -11,10 +11,7 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class PopoverComponent implements OnInit {
   userFullImagePath: string;
-  // private userImagePathSubscription: Subscription;
-
-  fullName$ = new BehaviorSubject<string>(null);
-  fullName = '';
+  user$: Observable<User> = this.authService.userStream;
 
   constructor(
     private authService: AuthService,
@@ -26,13 +23,6 @@ export class PopoverComponent implements OnInit {
     //   this.authService.userFullImagePath.subscribe((fullImagePath: string) => {
     //     this.userFullImagePath = fullImagePath;
     //   });
-
-    this.authService.userFullName
-      .pipe(take(1))
-      .subscribe((fullName: string) => {
-        this.fullName = fullName;
-        this.fullName$.next(fullName);
-      });
   }
 
   async onSignOut() {
