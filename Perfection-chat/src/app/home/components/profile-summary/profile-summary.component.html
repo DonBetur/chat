@@ -32,12 +32,12 @@
     ></ion-avatar>
 
 		<ng-container *ngIf="user$ | async as user">
-			<ion-card-title class="ion-margin-top"> {{ user | fullName }} </ion-card-title>
+			<ion-card-title class="ion-margin-top">
+				{{ user | fullName }}
+			</ion-card-title>
 			<ion-card-subtitle> {{ user.jobRole }} </ion-card-subtitle>
 		</ng-container>
   </ion-card-header>
-
-  <div class="item-divider"></div>
 
   <!--<ion-card-content>
     <div>
