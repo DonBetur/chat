@@ -13,7 +13,7 @@ import { CustomHttpExceptionResponse } from './models/http-exception-response.in
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-	catch(exception: unknown, host: ArgumentsHost) {
+	catch(exception: any, host: ArgumentsHost) {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse<Response>();
 		const request = ctx.getRequest<Request>();
@@ -24,7 +24,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
 		console.error(exception);
 
 		if (exception instanceof HttpException) {
-			const message = (exception as any).response.message?.join(', ');
+			console.log(exception);
+
+			const message =
+				(exception as any).response.message?.join(', ') ||
+				(exception as any).response.message;
 			status = exception.getStatus();
 
 			errorMessage = message;

@@ -15,25 +15,27 @@ import { ConnectionProfileService } from '../../services/connection-profile.serv
   styleUrls: ['./connection-profile.component.scss'],
 })
 export class ConnectionProfileComponent {
-  user$: Observable<User> = this.getUser();
+	private id$: Observable<number | undefined> = this.getUserIdFromUrl();
+	user$: Observable<User> = this.getUser();
   friendRequestStatus$: Observable<string> = this.getFriendRequestStatus();
 
   constructor(
     public bannerColorService: BannerColorService,
     private route: ActivatedRoute,
     public connectionProfileService: ConnectionProfileService,
-  ) {}
+  ) {
+
+	}
 
 
   getUser(): Observable<User> {
-    return this.getUserIdFromUrl().pipe(
+    return this.id$.pipe(
       switchMap((userId: number) => this.connectionProfileService.getConnectionUser(userId))
     );
   }
 
   addUser(): Subscription {
-    return this.getUserIdFromUrl()
-      .pipe(
+    return this.id$.pipe(
         switchMap((userId: number) => this.connectionProfileService.addConnectionUser(userId))
       )
       .pipe(take(1))
@@ -41,14 +43,23 @@ export class ConnectionProfileComponent {
   }
 
   getFriendRequestStatus(): Observable<string> {
-    return this.getUserIdFromUrl().pipe(
+    return this.id$.pipe(
       switchMap((userId: number) => this.connectionProfileService.getFriendRequestStatus(userId)),
 			map((friendRequestStatus) => friendRequestStatus.status)
     );
   }
+
   private getUserIdFromUrl(): Observable<number> {
-    return this.route.url.pipe(
-      map((urlSegment: UrlSegment[]) => +urlSegment[0].path)
-    );
+    return this.route.params.pipe(
+			map(params => params.id),
+			map(id => {
+				if (id === undefined) return undefined;
+				const idNumber = Number(id);
+
+				if (!isNaN(idNumber)) return idNumber;
+
+				return undefined;
+			})
+		);;
   }
 }

@@ -5,7 +5,7 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["./Perfection-chat/tsconfig.json", "tsconfig.json", "e2e/tsconfig.json"],
+        "project": ["**/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [

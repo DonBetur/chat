@@ -4,6 +4,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ConnectionProfileComponent } from './components/connection-profile/connection-profile.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { HomePage } from './home.page';
+import { PageColleaguesComponent } from './pages/page-colleagues/page-colleagues.component';
 
 const routes: Routes = [
   {
@@ -11,8 +12,12 @@ const routes: Routes = [
     component: HomePage,
     children: [
       { path: '', component: UserProfileComponent },
+			{
+				path: 'colleagues',
+				component: PageColleaguesComponent
+			},
       {
-        path: ':id',
+        path: 'id/:id',
         component: ConnectionProfileComponent,
       },
       {

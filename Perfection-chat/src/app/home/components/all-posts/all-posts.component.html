@@ -7,7 +7,7 @@
             <ion-col size="auto" class="ion-padding">
               <ion-avatar
                 style="cursor: pointer"
-                [routerLink]="['/', 'home', post.author.id]"
+                [routerLink]="['/', 'home', 'id', post.author.id]"
               >
                 <ion-img src="../../../../assets/avatar_me.jpg"></ion-img>
               </ion-avatar>
@@ -15,7 +15,7 @@
             <ion-col>
               <div
                 style="cursor: pointer"
-                [routerLink]="['/', 'home', post.author.id]"
+                [routerLink]="['/', 'home', 'id', post.author.id]"
                 class="full-name"
               >
                 {{ post.author.firstName }} {{ post.author.lastName }}

@@ -62,11 +62,11 @@ export class AllPostsComponent implements OnInit {
     this.postService
     .getSelectedPosts(this.queryParams)
     .subscribe((posts: Post[]) => {
-        for (let post = 0; post < posts.length; post++) {
-          this.allLoadedPosts.push(posts[post]);
-        }
-        if (isInitialLoad) event.target.complete();
-        this.skipPosts = this.skipPosts + 5;
+			for (const post of posts) {
+				this.allLoadedPosts.push(post);
+			}
+			if (isInitialLoad) event.target.complete();
+			this.skipPosts = this.skipPosts + 5;
     });
   }
 
