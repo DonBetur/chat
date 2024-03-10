@@ -56,7 +56,6 @@
 			<div class="top-panel">
 				<div class="friend-name-role">
 					<ion-text style="font-weight: 600; margin-left: 20px;" color="dark">
-						Здесь выводится текущий диалог
 						<ng-container *ngIf="obs.currentDialog !== null">
 							{{ obs.currentDialog.firstName }}
 							{{ obs.currentDialog.lastName }}
@@ -101,12 +100,12 @@
 					</ion-col>
 				</ion-row>
 			</ion-grid>
-			<form #form="ngForm" (ngSubmit)="onSubmit()">
+			<form [formGroup]="form" (ngSubmit)="onSubmit()">
 				<ion-item>
 					<ion-textarea
-						ngModel
 						type="text"
 						name="message"
+						[formControl]="form.controls.message"
 						placeholder="Write a message..."
 						required
 					></ion-textarea>

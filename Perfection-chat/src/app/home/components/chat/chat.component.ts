@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/auth/models/user.model';
 import { Conversation } from '../../models/Conversation';
@@ -15,7 +15,9 @@ import { ChatStateService } from '../../services/chat-state.service';
 	]
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  @ViewChild('form') form: NgForm;
+	form = new FormGroup({
+		message: new FormControl(null, [Validators.required])
+	});
 
   // userFullImagePath: string;
 
