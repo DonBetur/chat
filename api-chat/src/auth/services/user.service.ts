@@ -11,6 +11,7 @@ import {
 } from '../models/friend-request.interface';
 import { UserEntity } from '../models/user.entity';
 import { User } from '../models/user.class';
+import { ColleagueDto } from '../dto/colleague.dto';
 
 @Injectable()
 export class UserService {
@@ -185,5 +186,27 @@ export class UserService {
 				return from(this.userRepository.findByIds(userIds));
 			}),
 		);
+	}
+
+	async getColleagues(currentUser: User): Promise<ColleagueDto[]> {
+		const users = await this.userRepository.find();
+
+		const colleagues: ColleagueDto[] = await Promise.all(
+			users.map(async (user) => {
+				const friendRequest = await this.friendRequestRepository.findOne({
+					where: [
+						{ creator: currentUser, receiver: user },
+						{ creator: user, receiver: currentUser },
+					],
+				});
+
+				return {
+					...user,
+					isFriend: friendRequest ? true : false,
+				};
+			}),
+		);
+
+		return colleagues;
 	}
 }

@@ -16,6 +16,7 @@ import {
 } from '../models/friend-request.interface';
 import { User } from '../models/user.class';
 import { UserService } from '../services/user.service';
+import { ColleagueDto } from '../dto/colleague.dto';
 
 @Controller('user')
 export class UserController {
@@ -125,5 +126,11 @@ export class UserController {
 	@Get('friends/my')
 	getFriends(@Request() req): Observable<User[]> {
 		return this.userService.getFriends(req.user);
+	}
+
+	@UseGuards(JwtGuard)
+	@Get('colleagues/my')
+	getColleagues(@Request() req): Promise<ColleagueDto[]> {
+		return this.userService.getColleagues(req.user);
 	}
 }

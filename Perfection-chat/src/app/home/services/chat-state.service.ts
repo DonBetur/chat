@@ -113,6 +113,8 @@ export class ChatStateService {
 	}
 
 	public destroy(): void {
+		this.subscription.unsubscribe();
+
 		this.chatService.leaveConversation();
 
 		this.stateSelectedConversationIndex.next(0);
@@ -122,6 +124,6 @@ export class ChatStateService {
 		this.stateFriends.next([]);
 		this.stateCurrentDialog.next(null);
 
-		this.subscription.unsubscribe();
+		this.isInit = false;
 	}
 }

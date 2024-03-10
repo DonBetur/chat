@@ -35,6 +35,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 		this.chatStateService.init();
 	}
 
+	ngOnDestroy(): void {
+		this.chatStateService.destroy();
+  }
+
 
   onSubmit() {
 		const { message } = this.form.value;
@@ -64,8 +68,4 @@ export class ChatComponent implements OnInit, OnDestroy {
   //     return url + 'blank-profile-picture.png';
   //   }
   // }
-
-  ngOnDestroy() {
-		this.chatStateService.destroy();
-  }
 }

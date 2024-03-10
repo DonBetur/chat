@@ -13,6 +13,7 @@ import { Message } from '../models/Message';
 })
 export class ChatService {
 	constructor(private socket: ChatSocketService, private http: HttpClient) { }
+
 	getFriends(): Observable<User[]> {
 		return this.http.get<User[]>(`${environment.baseApiUrl}/user/friends/my`);
 	}

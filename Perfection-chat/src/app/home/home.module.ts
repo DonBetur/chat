@@ -18,6 +18,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { FriendRequestsPopoverComponent } from './components/header/friend-requests-popover/friend-requests-popover.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { FullNamePipe } from '../auth/pipes/full-name.pipe';
+import { ListColleaguesComponent } from './components/list-colleagues/list-colleagues.component';
+import { PageColleaguesComponent } from './pages/page-colleagues/page-colleagues.component';
 
 @NgModule({
   imports: [
@@ -40,7 +42,9 @@ import { FullNamePipe } from '../auth/pipes/full-name.pipe';
     UserProfileComponent,
     FriendRequestsPopoverComponent,
     ChatComponent,
-		FullNamePipe
+		FullNamePipe,
+		ListColleaguesComponent,
+		PageColleaguesComponent
   ],
 })
 export class HomePageModule {}

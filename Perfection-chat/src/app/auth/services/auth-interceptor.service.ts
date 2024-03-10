@@ -1,20 +1,24 @@
 import {
+	HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Storage } from '@capacitor/storage';
-import { from, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { from, Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
 
-	constructor() {}
+	constructor(
+		private readonly router: Router
+	) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -34,7 +38,17 @@ export class AuthInterceptorService implements HttpInterceptor {
           return next.handle(clonedRequest);
         }
         return next.handle(req);
-      })
+      }),
+			catchError((err) => {
+				if (err instanceof HttpErrorResponse && err.status === 401) {
+					console.error('Unauthorized error');
+					this.router.navigateByUrl('/auth');
+					return throwError(() => err);
+				} else {
+					console.log('Непредвиденная ошибка при http запросе');
+					return throwError(() => err);
+				}
+			})
     );
   }
 }
