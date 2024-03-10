@@ -1,152 +1,52 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/auth/models/user.model';
-import { AuthService } from 'src/app/auth/services/auth.service';
-import { ChatService } from '../../services/chat.service';
 import { Conversation } from '../../models/Conversation';
 import { Message } from '../../models/Message';
+import { ChatStateService } from '../../services/chat-state.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
+	providers: [
+		ChatStateService
+	]
 })
-export class ChatComponent {
+export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('form') form: NgForm;
 
   // userFullImagePath: string;
-  userId: number;
 
-  conversations$: Observable<Conversation[]>;
-  conversations: Conversation[] = [];
-  conversation: Conversation;
-
-  newMessage$: Observable<string>;
-  messages: Message[] = [];
-  friends: User[] = [];
-  friend: User;
-  friend$: BehaviorSubject<User> = new BehaviorSubject<User | null>(null);
-
-  selectedConversationIndex = 0;
-
-  private userImagePathSubscription: Subscription;
-  private userIdSubscription: Subscription;
-  private messagesSubscription: Subscription;
-  private conversationSubscription: Subscription;
-  private newMessagesSubscription: Subscription;
-  private friendsSubscription: Subscription;
-  private friendSubscription: Subscription;
+	public conversations$: Observable<Conversation[]> = this.chatStateService.conversations$;
+	public messages$: Observable<Message[]> = this.chatStateService.messages$;
+	public currentDialog$: Observable<User | null> = this.chatStateService.currentDialog$;
+	public friends$: Observable<User[]> = this.chatStateService.friends$;
+	public selectedConversationIndex$: Observable<number> = this.chatStateService.selectedConversationIndex$;
 
   constructor(
-    private chatService: ChatService,
-    private authService: AuthService
+    private readonly chatStateService: ChatStateService
   ) {}
 
-  ionViewDidEnter() {
-    console.log(
-      123,
-      this.selectedConversationIndex,
-      this.conversations,
-      this.conversation,
-      this.messages,
-      this.friends,
-      this.friend
-    );
-    // this.userImagePathSubscription =
-    // this.authService.userFullImagePath.subscribe((fullImagePath: string) => {
-    //   this.userFullImagePath = fullImagePath;
-    // });
+	ngOnInit(): void {
+		this.chatStateService.init();
+	}
 
-    this.userIdSubscription = this.authService.userId.subscribe(
-      (userId: number) => {
-        this.userId = userId;
-      }
-    );
-
-    this.conversationSubscription = this.chatService
-      .getConversations()
-      .subscribe((conversations: Conversation[]) => {
-				console.log(conversations);
-
-        this.conversations.push(conversations[0]); // Note: from mergeMap stream
-      });
-
-    this.messagesSubscription = this.chatService
-      .getConversationMessages()
-      .subscribe((messages: Message[]) => {
-        messages.forEach((message: Message) => {
-          const allMessageIds = this.messages.map(
-            (message1: Message) => message1.id
-          );
-          if (!allMessageIds.includes(message.id)) {
-            this.messages.push(message);
-          }
-        });
-      });
-
-    this.newMessagesSubscription = this.chatService
-      .getNewMessage()
-      .subscribe((message: Message) => {
-        message.createdAt = new Date();
-
-        const allMessageIds = this.messages.map(
-          (message1: Message) => message1.id
-        );
-        if (!allMessageIds.includes(message.id)) {
-          this.messages.push(message);
-        }
-      });
-
-    this.friendSubscription = this.friend$.subscribe((friend: any) => {
-      if (JSON.stringify(friend) !== '{}') {
-        this.chatService.joinConversation(this.friend.id);
-      }
-    });
-
-    this.friendsSubscription = this.chatService
-      .getFriends()
-      .subscribe((friends: User[]) => {
-        this.friends = friends;
-
-        if (friends.length > 0) {
-          this.friend = this.friends[0];
-          this.friend$.next(this.friend);
-
-          friends.forEach((friend: User) => {
-            this.chatService.createConversation(friend);
-          });
-          this.chatService.joinConversation(this.friend.id);
-        }
-      });
-  }
 
   onSubmit() {
-    const { message } = this.form.value;
+		const { message } = this.form.value;
     if (!message) return;
-    const conversationUserIds = [this.userId, this.friend.id].sort();
 
-    this.conversations.forEach((conversation: Conversation) => {
-      const userIds = conversation.users.map((user: User) => user.id).sort();
+		const conversation: Conversation | null = this.chatStateService.sendMessage(message);
 
-      if (JSON.stringify(conversationUserIds) === JSON.stringify(userIds)) {
-        this.conversation = conversation;
-      }
-    });
-
-    this.chatService.sendMessage(message, this.conversation);
-    this.form.reset();
+		if (conversation !== null) {
+			this.form.reset();
+		}
   }
 
   openConversation(friend: User, index: number): void {
-    this.selectedConversationIndex = index;
-
-    this.chatService.leaveConversation();
-
-    this.friend = friend;
-    this.friend$.next(this.friend);
-
-    this.messages = [];
+		this.chatStateService.openConversation(friend, index);
   }
 
   // deriveFullImagePath(user: User): string {
@@ -163,22 +63,7 @@ export class ChatComponent {
   //   }
   // }
 
-  ionViewDidLeave() {
-    this.chatService.leaveConversation();
-
-    this.selectedConversationIndex = 0;
-    this.conversations = [];
-    this.conversation = undefined;
-    this.messages = [];
-    this.friends = [];
-    this.friend = undefined;
-
-    this.messagesSubscription.unsubscribe();
-    this.userImagePathSubscription.unsubscribe();
-    this.userIdSubscription.unsubscribe();
-    this.conversationSubscription.unsubscribe();
-    this.newMessagesSubscription.unsubscribe();
-    this.friendsSubscription.unsubscribe();
-    this.friendSubscription.unsubscribe();
+  ngOnDestroy() {
+		this.chatStateService.destroy();
   }
 }

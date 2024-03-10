@@ -64,6 +64,10 @@ export class AuthService {
 			);
   }
 
+	get syncUser(): User {
+		return this.user$.value;
+	}
+
   // get userFullImagePath(): Observable<string> {
   //   return this.user$.asObservable().pipe(
   //     switchMap((user: User) => {

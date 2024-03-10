@@ -16,7 +16,7 @@ import { ActiveConversation } from '../models/active-conversation.interface';
 import { Message } from '../models/message.interface';
 import { ConversationService } from '../services/conversation.service';
 
-@WebSocketGateway({ cors: { origin: ['http://localhost:8100'] } })
+@WebSocketGateway({ cors: true })
 export class ChatGateway
 	implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit
 {
