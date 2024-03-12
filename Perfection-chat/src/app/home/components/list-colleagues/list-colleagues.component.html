@@ -1,14 +1,33 @@
 
 <ion-list class="list">
-	<ion-card>
-		<ion-card-header>
-			<ion-card-title>Card Title</ion-card-title>
-			<ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-		</ion-card-header>
-
-		<ion-card-content>
-			Here's a small text description for the card content. Nothing more, nothing less.
-		</ion-card-content>
-	</ion-card>
+	<ng-container *ngIf="colleagues$ | async as colleagues">
+		<ng-container *ngFor="let colleague of colleagues">
+			<ion-card class="card">
+				<div class="card__body">
+					<div class="card__img-wrapper" [routerLink]="getColleagueUrl(colleague)">
+						<img class="card__img" src="/assets/avatar_me.jpg" alt="">
+					</div>
+					<div class="card__text">
+						<ion-card-title class="card__title" [routerLink]="getColleagueUrl(colleague)">
+							{{ colleague | fullName }}
+						</ion-card-title>
+						<div class="card__job">
+							{{ colleague.jobRole }}
+						</div>
+					</div>
+				</div>
+				<div class="card__tags">
+					<div class="card__tag">
+						<ion-badge color="tertiary">Коллега</ion-badge>
+					</div>
+					<ng-container *ngIf="colleague.isFriend">
+						<div class="card__tag">
+							<ion-badge color="primary">Друг</ion-badge>
+						</div>
+					</ng-container>
+				</div>
+			</ion-card>
+		</ng-container>
+	</ng-container>
 </ion-list>
 

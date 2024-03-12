@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import { NewUser } from '../models/newUser.model';
 import { Role, User } from '../models/user.model';
 import { UserResponse } from '../models/userResponse.model';
+import { ChatStateService } from 'src/app/home/services/chat-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -200,5 +201,6 @@ export class AuthService {
     this.user$.next(null);
     Storage.remove({ key: 'token' });
     this.router.navigateByUrl('/auth');
+		location.reload();
   }
 }

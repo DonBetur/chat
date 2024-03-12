@@ -43,6 +43,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 				if (err instanceof HttpErrorResponse && err.status === 401) {
 					console.error('Unauthorized error');
 					this.router.navigateByUrl('/auth');
+					location.reload();
 					return throwError(() => err);
 				} else {
 					console.log('Непредвиденная ошибка при http запросе');

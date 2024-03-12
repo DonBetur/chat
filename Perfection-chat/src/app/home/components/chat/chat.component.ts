@@ -9,12 +9,9 @@ import { ChatStateService } from '../../services/chat-state.service';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss'],
-	providers: [
-		ChatStateService
-	]
+  styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent {
 	form = new FormGroup({
 		message: new FormControl(null, [Validators.required])
 	});
@@ -30,15 +27,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private readonly chatStateService: ChatStateService
   ) {}
-
-	ngOnInit(): void {
-		this.chatStateService.init();
-	}
-
-	ngOnDestroy(): void {
-		this.chatStateService.destroy();
-  }
-
 
   onSubmit() {
 		const { message } = this.form.value;

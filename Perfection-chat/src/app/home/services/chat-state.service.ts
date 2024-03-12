@@ -6,7 +6,9 @@ import { Conversation } from '../models/Conversation';
 import { Message } from '../models/Message';
 import { User } from 'src/app/auth/models/user.model';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ChatStateService {
 
 	private stateConversations: BehaviorSubject<Conversation[]> = new BehaviorSubject<Conversation[]>([]);
@@ -27,7 +29,7 @@ export class ChatStateService {
 		private readonly chatService: ChatService,
 		private readonly authService: AuthService
 	) {
-
+		this.init();
 	}
 
 	public init(): void {

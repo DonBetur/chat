@@ -1,5 +1,36 @@
+:host {
+	display: block;
+}
+
 .list {
 	padding-top: 0;
 	margin-bottom: 0;
 	background-color: transparent;
+}
+
+.card {
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.card__body {
+	display: grid;
+	grid-template-columns: 50px auto;
+	align-items: center;
+	gap: 15px;
+}
+
+.card__img-wrapper {
+	cursor: pointer;
+}
+
+.card__title {
+	cursor: pointer;
+}
+
+.card__tags {
+	display: flex;
+	gap: 0.5rem;
 }
