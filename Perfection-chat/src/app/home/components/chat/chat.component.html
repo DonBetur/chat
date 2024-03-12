@@ -57,8 +57,7 @@
 				<div class="friend-name-role">
 					<ion-text style="font-weight: 600; margin-left: 20px;" color="dark">
 						<ng-container *ngIf="obs.currentDialog !== null">
-							{{ obs.currentDialog.firstName }}
-							{{ obs.currentDialog.lastName }}
+							{{ obs.currentDialog | fullName }}
 						</ng-container>
 						<ng-container *ngIf="obs.currentDialog === null">
 							Loading...
