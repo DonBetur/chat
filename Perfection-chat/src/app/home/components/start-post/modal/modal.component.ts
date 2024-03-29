@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -11,7 +11,9 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit{
-  @ViewChild('form') form: NgForm;
+  form = new FormGroup({
+    body: new FormControl<string | null>(null, [])
+  });
 
   @Input() postId?: number;
 
@@ -46,7 +48,9 @@ export class ModalComponent implements OnInit{
 
   onPost(){
       if (!this.form.valid) return;
-      const body = this.form.value['body'];
+      if (this.form.controls.body.value === null) return;
+
+      const body = this.form.controls.body.value;
       this.modalController.dismiss(
         {
           post: {

@@ -18,10 +18,10 @@ export class LoginComponent {
 		private readonly authService: AuthService
 	) {
 		// Это заглушка с данными авторизации по умолчанию
-		this.form.setValue({
-			email: 'name1@romashka.ru',
-			password: 'name1'
-		});
+		// this.form.setValue({
+		// 	email: 'name1@romashka.ru',
+		// 	password: 'name1'
+		// });
 	}
 
 	login(): void {

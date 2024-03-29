@@ -31,13 +31,13 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <form #form="ngForm" (ngSubmit)="onPost()" class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="onPost()" class="ion-padding">
     <ion-textarea
       rows="5"
       color="dark"
       placeholder="Делитесь с друзьями и коллегами обо всем на свете!"
       type="text"
-      ngModel
+      [formControl]="form.controls.body"
       name="body"
       required
     >
